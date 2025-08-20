@@ -38,7 +38,7 @@ Antes de iniciar, asegúrate de tener instalado:
 
 1. Clonar el repositorio:
    '''bash
-   git clone https://github.com/tuusuario/portafolios.git
+   git clone https://github.com/MiguelG2000/Magnifolio.git
    cd portafolios
    
 3. Crear y activar un entorno virtual:
