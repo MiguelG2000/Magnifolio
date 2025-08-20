@@ -1,0 +1,9 @@
+# Ignorar el entorno virtual de PyCharm
+.idea/
+__pycache__/
+venv/
+*.pyc
+
+# Ignorar archivos del sistema operativo y de PyCharm
+.DS_Store
+.venv
