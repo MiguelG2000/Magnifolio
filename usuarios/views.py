@@ -2,6 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .forms import PerfilForm
+
+from usuarios.models import Usuario
+
 
 def login(request):
     if request.method == "POST":
@@ -27,8 +31,18 @@ def login(request):
 def usuario_logout(request):
     logout(request)
     messages.success(request, "Has cerrado sesión correctamente.")
-    return redirect("login")
+    return redirect("index")
 
-@login_required
 def index(request):
     return render(request, "index.html")
+
+def lista_portafolios(request):
+    usuarios = Usuario.objects.filter(visible=True)
+    context = {
+        "usuarios": usuarios,
+    }
+    return render(request, 'index.html', context)
+
+@login_required
+def mi_perfil(request):
+    return render(request, 'mi_perfil.html')

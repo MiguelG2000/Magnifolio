@@ -15,4 +15,15 @@ class Proyecto(models.Model):
     fecha_creacion = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.titulo} ({self.usuario.nombre})"
+        return f"{self.titulo} ({self.usuario.first_name})"
+
+class FotoProyecto(models.Model):
+    proyecto = models.ForeignKey(
+        Proyecto,
+        on_delete=models.CASCADE,
+        related_name='fotos'
+    )
+    imagen = models.ImageField(upload_to='proyectos/')
+
+    def __str__(self):
+        return f"Foto de {self.proyecto.titulo}"

@@ -1,15 +1,34 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-</head>
-<body class="bg-light">
-<div class="container mt-5">
-    <h2>Bienvenido {{ request.user.username }}</h2>
-    <p>Has iniciado sesión correctamente.</p>
-    <a href="{% url 'logout' %}" class="btn btn-danger">Cerrar sesión</a>
+{% extends 'base.html' %}
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+{% block content %}
+<div class="text-center mt-10">
+    <div class="bg-white shadow-lg rounded-2xl p-6 mt-6">
+        <h2 class="text-2xl font-bold text-gray-700 mb-4">Portafolios de Usuarios</h2>
+    
+        <div class="space-y-4">
+            {% for usuario in usuarios %}
+                {% if usuario.visible %}
+                    <div class="flex items-center bg-gray-100 p-4 rounded-lg shadow-sm">
+                        <img src="{{ usuario.foto_perfil.url }}" alt="{{ usuario.username }}"
+                             class="w-16 h-16 rounded-full object-cover mr-4">
+                        
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-800">{{ usuario.username }}</h3>
+                            <p class="text-gray-600 text-sm">{{ usuario.descripcion|default:"Sin descripción" }}</p>
+                        </div>
+                        
+                        <a href="{% url 'ver_portafolio' usuario.id %}"
+                           class="ml-auto bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg shadow">
+                            Ver Portafolio
+                        </a>
+                    </div>
+                {% endif %}
+            {% empty %}
+                <p class="text-gray-500">No hay portafolios disponibles.</p>
+            {% endfor %}
+        </div>
+    </div>
 </div>
-</body>
-</html>
+{% endblock %}
