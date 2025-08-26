@@ -2,6 +2,7 @@ import base64
 from lib2to3.fixes.fix_input import context
 
 from django.core.files.base import ContentFile
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib import messages
@@ -40,7 +41,11 @@ def usuario_logout(request):
     return redirect("index")
 
 def index(request):
-    usuarios = Usuario.objects.filter(visible=True)
+    usuarios_list = Usuario.objects.filter(visible=True)
+    paginator = Paginator(usuarios_list, 5)
+
+    page_number = request.GET.get('page')
+    usuarios = paginator.get_page(page_number)
     context = {
         "usuarios": usuarios,
     }

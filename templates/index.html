@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block navbar %}
     {% include 'navbar.html' %}
 {% endblock %}
@@ -6,28 +7,51 @@
 <div class="text-center mt-10">
     <div class="bg-white shadow-lg rounded-2xl p-6 mt-6">
         <h2 class="text-2xl font-bold text-gray-700 mb-4">Portafolios de Usuarios</h2>
-    
+
         <div class="space-y-4">
             {% for usuario in usuarios %}
-                {% if usuario.visible %}
-                    <div class="flex items-center bg-gray-100 p-4 rounded-lg shadow-sm">
+                <div class="flex items-center bg-gray-100 p-4 rounded-lg shadow-sm">
+                    {% if usuario.foto_perfil %}
                         <img src="{{ usuario.foto_perfil.url }}" alt="{{ usuario.username }}"
                              class="w-16 h-16 rounded-full object-cover mr-4">
-                        
-                        <div class="flex-1">
-                            <h3 class="text-lg font-semibold text-gray-800">{{ usuario.username }}</h3>
-                            <p class="text-gray-600 text-sm">{{ usuario.descripcion|default:"Sin descripción" }}</p>
-                        </div>
-                        
-                        <a class="ml-auto bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg shadow">
-                            Ver Portafolio
-                        </a>
+                    {% else %}
+                        <img src="{% static 'images/default-profile.png' %}" alt="{{ usuario.username }}"
+                             class="w-16 h-16 rounded-full object-cover mr-4">
+                    {% endif %}
+
+                    <div class="flex-1">
+                        <h3 class="text-lg font-semibold text-gray-800">{{ usuario.username }}</h3>
+                        <p class="text-gray-600 text-sm">{{ usuario.descripcion|default:"Sin descripción" }}</p>
                     </div>
-                {% endif %}
+
+                    <a class="ml-auto bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg shadow">
+                        Ver Portafolio
+                    </a>
+                </div>
             {% empty %}
                 <p class="text-gray-500">No hay portafolios disponibles.</p>
             {% endfor %}
         </div>
+
+        <!-- Paginación -->
+        <div class="flex justify-center mt-6 space-x-2">
+            {% if usuarios.has_previous %}
+                <a href="?page={{ usuarios.previous_page_number }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Anterior</a>
+            {% endif %}
+
+            {% for num in usuarios.paginator.page_range %}
+                {% if usuarios.number == num %}
+                    <span class="px-3 py-1 bg-blue-600 text-white rounded">{{ num }}</span>
+                {% else %}
+                    <a href="?page={{ num }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if usuarios.has_next %}
+                <a href="?page={{ usuarios.next_page_number }}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Siguiente</a>
+            {% endif %}
+        </div>
+
     </div>
 </div>
 {% endblock %}
