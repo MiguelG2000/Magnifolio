@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto p-6">
+    <div class="bg-white rounded-xl shadow-lg p-6 relative">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">Editar Perfil</h2>
+
+        <form method="post" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-gray-700 font-medium">Nombre</label>
+                    <input type="text" name="first_name" value="{{ user.first_name }}"
+                           class="w-full mt-1 px-3 py-2 border rounded-lg focus:ring focus:ring-blue-300">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-medium">Apellido</label>
+                    <input type="text" name="last_name" value="{{ user.last_name }}"
+                           class="w-full mt-1 px-3 py-2 border rounded-lg focus:ring focus:ring-blue-300">
+                </div>
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium">Correo electrónico</label>
+                <input type="email" name="email" value="{{ user.email }}"
+                       class="w-full mt-1 px-3 py-2 border rounded-lg focus:ring focus:ring-blue-300">
+            </div>
+            <div>
+                <label class="block text-gray-700 font-medium">Descripción</label>
+                <textarea name="descripcion" rows="3" minlength="300"
+                          class="w-full mt-1 px-3 py-2 border rounded-lg focus:ring focus:ring-blue-300">{{ user.descripcion }}</textarea>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-gray-700 font-medium">Foto de perfil</label>
+                    <input id="fileInput" type="file" name="foto_perfil" accept="image/*"
+                           class="w-full mt-1 px-3 py-2 border rounded-lg focus:ring focus:ring-blue-300">
+                </div>
+                <div class="flex justify-center items-center">
+                    <img id="preview" class="max-w-full max-h-64 rounded-lg shadow-md hidden" />
+                </div>
+            </div>
+            <input type="hidden" name="foto_perfil_cropped" id="croppedImage">
+            <div class="flex items-center">
+                <input type="checkbox" name="visible" id="visible"
+                       {% if user.visible %}checked{% endif %}
+                       class="h-4 w-4 text-blue-600 border-gray-300 rounded">
+                <label for="visible" class="ml-2 text-gray-700">Perfil público</label>
+            </div>
+            <div class="flex justify-end space-x-3 pt-4">
+                <a href="{% url 'mi_perfil' %}" 
+                   class="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400 transition">
+                    Cancelar
+                </a>
+                <button type="submit"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
+                    Guardar cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    let cropper;
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+    const croppedImage = document.getElementById('croppedImage');
+
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                preview.src = e.target.result;
+                preview.classList.remove("hidden");
+
+                if (cropper) cropper.destroy();
+
+                cropper = new Cropper(preview, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    movable: false,
+                    zoomable: true,
+                    rotatable: false,
+                    scalable: false,
+                    background: false,
+                    autoCropArea: 1,
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.querySelector("form").addEventListener("submit", function (e) {
+        if (cropper) {
+            const canvas = cropper.getCroppedCanvas({
+                width: 300,
+                height: 300,
+            });
+            croppedImage.value = canvas.toDataURL("image/png");
+        }
+    });
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const textarea = document.querySelector('textarea[name="descripcion"]');
+      const divPadre = textarea.parentElement;
+      
+      const contadorDiv = document.createElement('div');
+      contadorDiv.className = 'text-sm text-gray-500 mt-1';
+      
+      const spanContador = document.createElement('span');
+      spanContador.textContent = '0/300';
+      
+      contadorDiv.appendChild(spanContador);
+      divPadre.appendChild(contadorDiv);
+      
+      textarea.addEventListener('input', function() {
+        const longitud = textarea.value.length;
+        spanContador.textContent = `${longitud}/300`;
+        
+        if (longitud > 300) {
+          spanContador.classList.remove('text-gray-500');
+          spanContador.classList.add('text-red-500');
+        } else {
+          spanContador.classList.remove('text-red-500');
+          spanContador.classList.add('text-gray-500');
+        }
+      });
+    });
+</script>
+
+<style>
+    #preview {
+        max-width: 100%;
+        max-height: 300px;
+        object-fit: contain;
+    }
+</style>
+{% endblock %}

@@ -1,4 +1,6 @@
 import base64
+from lib2to3.fixes.fix_input import context
+
 from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
@@ -48,8 +50,11 @@ def lista_portafolios(request):
 
 @login_required
 def mi_perfil(request):
-    usuario = request.user  # El usuario autenticado
+    return render(request, 'mi_perfil.html')
 
+@login_required
+def editar_perfil(request):
+    usuario = request.user
     if request.method == "POST":
         form = UsuarioForm(request.POST, request.FILES, instance=usuario)
 
@@ -86,7 +91,6 @@ def mi_perfil(request):
         form = UsuarioForm(instance=usuario)
 
     context = {
-        "user": usuario,
         "form": form
     }
-    return render(request, 'mi_perfil.html', context)
+    return render(request, 'editar_perfil.html', context)
