@@ -1,16 +1,14 @@
 import base64
-from lib2to3.fixes.fix_input import context
-
 from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-from .forms import UsuarioForm
+
+from .forms import UsuarioForm, RegistroForm
 
 from usuarios.models import Usuario
-
 
 def login(request):
     if request.method == "POST":
@@ -61,7 +59,6 @@ def editar_perfil(request):
         if form.is_valid():
             usuario = form.save(commit=False)
 
-            # 🔹 Manejo de imagen recortada
             cropped_data = request.POST.get("foto_perfil_cropped")
             if cropped_data:
                 try:
@@ -80,7 +77,6 @@ def editar_perfil(request):
             messages.success(request, "Tu perfil se actualizó correctamente ✅")
             return redirect(reverse_lazy('mi_perfil'))
         else:
-            # Si el formulario no es válido, mostrar errores
             errors = form.errors.as_data()
             error_messages = []
             for field, error_list in errors.items():
@@ -94,3 +90,20 @@ def editar_perfil(request):
         "form": form
     }
     return render(request, 'editar_perfil.html', context)
+
+def usuario_registro(request):
+    if request.method == 'POST':
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, 'Usuario creado exitosamente.')
+            return redirect('login')
+        else:
+            messages.error(request, 'Por favor corrige los errores en el formulario.')
+    else:
+        form = RegistroForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'registro.html', context)
