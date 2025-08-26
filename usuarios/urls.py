@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from .views import (
     login,
     usuario_logout,
@@ -6,6 +7,7 @@ from .views import (
     mi_perfil,
     editar_perfil,
     usuario_registro,
+    mi_portafolio,
 )
 
 urlpatterns = [
@@ -15,4 +17,5 @@ urlpatterns = [
     path("", index, name="index"),
     path("mi_perfil/", mi_perfil, name="mi_perfil"),
     path("editar_perfil/", editar_perfil, name="editar_perfil"),
+    path("mi_portafolio/", mi_portafolio, name="mi_portafolio"),
 ]

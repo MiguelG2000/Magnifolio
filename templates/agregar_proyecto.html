@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+{% block content %}
+<div class="flex justify-center items-center mt-10">
+    <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-lg">
+        <h2 class="text-2xl font-bold text-gray-700 mb-4 text-center">Agregar Nuevo Proyecto</h2>
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            
+            <!-- Campos del Proyecto -->
+            {{ form.as_p }}
+
+            <!-- Campos para Fotos -->
+            <label class="block text-gray-700 font-medium mt-4">Imágenes del Proyecto</label>
+            {{ formset.management_form }}
+            {% for foto_form in formset %}
+                {{ foto_form.as_p }}
+            {% endfor %}
+
+            <button type="submit"
+                    class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-medium px-5 py-2 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out">
+                <i class="fas fa-save mr-2"></i> Guardar Proyecto
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

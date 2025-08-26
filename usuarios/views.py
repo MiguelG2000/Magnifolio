@@ -1,4 +1,6 @@
 import base64
+from lib2to3.fixes.fix_input import context
+
 from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
@@ -9,6 +11,7 @@ from django.urls import reverse_lazy
 from .forms import UsuarioForm, RegistroForm
 
 from usuarios.models import Usuario
+from proyectos.models import Proyecto
 
 def login(request):
     if request.method == "POST":
@@ -37,14 +40,11 @@ def usuario_logout(request):
     return redirect("index")
 
 def index(request):
-    return render(request, "index.html")
-
-def lista_portafolios(request):
     usuarios = Usuario.objects.filter(visible=True)
     context = {
         "usuarios": usuarios,
     }
-    return render(request, 'index.html', context)
+    return render(request, "index.html", context)
 
 @login_required
 def mi_perfil(request):
@@ -107,3 +107,19 @@ def usuario_registro(request):
         'form': form
     }
     return render(request, 'registro.html', context)
+
+#-------------------------------------------------------------------------------------------------------
+
+def lista_portafolios(request):
+    usuarios = Usuario.objects.filter(visible=True)
+    context = {
+        "usuarios": usuarios,
+    }
+    return render(request, 'index.html', context)
+
+def mi_portafolio(request):
+    proyectos = Proyecto.objects.filter(usuario = request.user)
+    context = {
+        "proyectos": proyectos,
+    }
+    return render(request, 'portafolio.html', context)

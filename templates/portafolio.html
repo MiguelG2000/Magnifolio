@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}
+{% block content %}
+<div class="text-center mt-6">
+    <div class="flex justify-start items-center rounded-2xl mb-4">
+        <a href="{% url 'agregar_proyecto' %}" class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-medium px-5 py-2 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out">
+            <i class="fas fa-plus"></i>
+            Agregar Proyecto
+        </a>
+    </div>
+    <div class="bg-white shadow-lg rounded-2xl p-6 mt-6">
+        <h2 class="text-2xl font-bold text-gray-700 mb-4">Mis Proyectos</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for proyecto in proyectos %}
+                <div class="bg-gray-100 p-4 rounded-xl shadow hover:shadow-lg transition">
+                    {% if proyecto.imagen %}
+                        <img src="{{ proyecto.imagen.url }}" alt="{{ proyecto.nombre }}" class="w-full h-40 object-cover rounded-md mb-3">
+                    {% else %}
+                        <div class="w-full h-40 bg-gray-300 rounded-md mb-3 flex items-center justify-center text-gray-600">
+                            Sin imagen
+                        </div>
+                    {% endif %}
+                    <h3 class="text-center text-lg font-semibold text-gray-800 mb-2">{{ proyecto.titulo }}</h3>
+                    <h3 class="text-lg font-semibold text-gray-800">{{ proyecto.nombre }}</h3>
+                    <p class="text-gray-600 text-sm mb-3">{{ proyecto.descripcion|default:"Sin descripción" }}</p>
+                </div>
+            {% empty %}
+                <p class="text-gray-500 col-span-full">No has agregado proyectos todavía.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
