@@ -10,21 +10,24 @@
 
         <div class="space-y-4">
             {% for usuario in usuarios %}
-                <div class="flex items-center bg-gray-100 p-4 rounded-lg shadow-sm">
+                <div class="flex items-center bg-gray-100 p-6 rounded-lg shadow-sm">
                     {% if usuario.foto_perfil %}
                         <img src="{{ usuario.foto_perfil.url }}" alt="{{ usuario.username }}"
-                             class="w-16 h-16 rounded-full object-cover mr-4">
+                             class="w-20 h-20 rounded-full object-cover mr-6">
                     {% else %}
                         <img src="{% static 'images/default-profile.png' %}" alt="{{ usuario.username }}"
-                             class="w-16 h-16 rounded-full object-cover mr-4">
+                             class="w-20 h-20 rounded-full object-cover mr-6">
                     {% endif %}
-
-                    <div class="flex-1">
-                        <h3 class="text-lg font-semibold text-gray-800">{{ usuario.username }}</h3>
-                        <p class="text-gray-600 text-sm">{{ usuario.descripcion|default:"Sin descripción" }}</p>
+                
+                    <div class="flex-1 flex flex-col justify-center text-center px-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ usuario.username }}</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed max-w-3xl mx-auto">
+                            {{ usuario.descripcion|default:"Sin descripción" }}
+                        </p>
                     </div>
-
-                    <a class="ml-auto bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg shadow">
+                
+                    <a href="{% url 'portafolio' usuario.username %}"
+                       class="ml-6 bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg shadow transition">
                         Ver Portafolio
                     </a>
                 </div>

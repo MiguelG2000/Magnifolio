@@ -3,7 +3,7 @@ from lib2to3.fixes.fix_input import context
 
 from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -114,7 +114,7 @@ def usuario_registro(request):
     return render(request, 'registro.html', context)
 
 #-------------------------------------------------------------------------------------------------------
-
+@login_required
 def lista_portafolios(request):
     usuarios = Usuario.objects.filter(visible=True)
     context = {
@@ -122,9 +122,26 @@ def lista_portafolios(request):
     }
     return render(request, 'index.html', context)
 
+@login_required
 def mi_portafolio(request):
     proyectos = Proyecto.objects.filter(usuario = request.user)
     context = {
         "proyectos": proyectos,
     }
+    return render(request, 'proyectos.html', context)
+
+
+def portafolio(request, username):
+    usuario = get_object_or_404(Usuario, username=username)
+    proyectos = usuario.proyectos.all()
+    context = {
+        "usuario": usuario,
+        "proyectos": proyectos,
+    }
     return render(request, 'portafolio.html', context)
+
+def terminos(request):
+    return render(request, 'terminos.html')
+
+def acerca_mi(request):
+    return render(request, 'acerca_mi.html')

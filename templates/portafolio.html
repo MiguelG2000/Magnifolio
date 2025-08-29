@@ -1,52 +1,59 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block navbar %}
     {% include 'navbar.html' %}
 {% endblock %}
 {% block content %}
-<div class="text-center mt-6">
-    <div class="flex justify-start items-center rounded-2xl mb-4">
-        <a href="{% url 'agregar_proyecto' %}" class="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-medium px-5 py-2 rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out">
-            <i class="fas fa-plus"></i>
-            Agregar Proyecto
-        </a>
-    </div>
-    <div class="bg-white shadow-lg rounded-2xl p-6 mt-6">
-        <h2 class="text-2xl font-bold text-gray-700 mb-4">Mis Proyectos</h2>
+<div class="max-w-6xl mx-auto p-6">
+    <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col md:flex-row items-center mb-8 animate-fadeIn">
+        {% if usuario.foto_perfil %}
+            <img src="{{ usuario.foto_perfil.url }}"
+                 alt="{{ usuario.username }}"
+                 class="w-28 h-28 rounded-full object-cover border-4 border-blue-500 shadow-md mb-4 md:mb-0 md:mr-6">
+        {% else %}
+            <img src="{% static 'images/default-profile.webp' %}"
+                 alt="{{ usuario.username }}"
+                 class="w-28 h-28 rounded-full object-cover border-4 border-blue-500 shadow-md mb-4 md:mb-0 md:mr-6">
+        {% endif %}
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {% for proyecto in proyectos %}
-                <div class="bg-gray-100 p-4 rounded-xl shadow hover:shadow-lg transition">
-                    {% if proyecto.fotos.all %}
-                        {% with proyecto.fotos.all|first as primera_foto %}
-                            {% if primera_foto %}
-                                <img src="{{ primera_foto.imagen.url }}" alt="{{ proyecto.titulo }}" class="w-full h-40 object-cover rounded-md mb-3">
-                            {% else %}
-                                <div class="w-full h-40 bg-gray-300 rounded-md mb-3 flex items-center justify-center text-gray-600">
-                                    Sin imagen
-                                </div>
-                            {% endif %}
-                        {% endwith %}
-                    {% else %}
-                        <div class="w-full h-40 bg-gray-300 rounded-md mb-3 flex items-center justify-center text-gray-600">
-                            Sin imagen
-                        </div>
-                    {% endif %}
-                    <h3 class="text-center text-lg font-semibold text-gray-800 mb-2">{{ proyecto.titulo }}</h3>
-                    <h3 class="text-lg font-semibold text-gray-800">{{ proyecto.nombre }}</h3>
-                    <p class="text-gray-600 text-sm mb-3">{{ proyecto.descripcion|default:"Sin descripción" }}</p>
-                    <div class="flex justify-between mt-3">
-                        <a href="{% url 'editar_proyecto' proyecto.proyecto_id %}" class="text-blue-500 hover:text-blue-700">
-                            <i class="fas fa-edit"></i> Editar
-                        </a>
-                        <a href="{% url 'eliminar_proyecto' proyecto.proyecto_id %}" class="text-red-500 hover:text-red-700">
-                            <i class="fas fa-trash"></i> Eliminar
-                        </a>
-                    </div>
-                </div>
-            {% empty %}
-                <p class="text-gray-500 col-span-full">No has agregado proyectos todavía.</p>
-            {% endfor %}
+        <div class="text-center md:text-left">
+            <h2 class="text-3xl font-bold text-gray-800">{{ usuario.get_full_name|default:usuario.username }}</h2>
+            <p class="text-gray-600 text-justify mt-2"><i class="fas fa-user mr-2"></i>{{ usuario.descripcion|default:"Sin descripción" }}</p>
         </div>
     </div>
+
+    <h3 class="text-2xl font-bold text-gray-800 mb-4"><i class="fas fa-project-diagram mr-2"></i> Proyectos</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for proyecto in proyectos %}
+        <div class="bg-white rounded-xl shadow hover:shadow-xl transform hover:-translate-y-1 transition p-4 animate-fadeIn">
+            {% if proyecto.fotos.first %}
+                <img src="{{ proyecto.fotos.first.imagen.url }}"
+                     alt="{{ proyecto.titulo }}"
+                     class="w-full h-40 object-cover rounded-md mb-4">
+            {% else %}
+                <div class="w-full h-40 bg-gray-200 flex items-center justify-center rounded-md mb-4">
+                    <i class="fas fa-image text-gray-400 text-4xl"></i>
+                </div>
+            {% endif %}
+            <h4 class="text-xl font-semibold text-gray-800">{{ proyecto.titulo }}</h4>
+            <p class="text-gray-600 text-justify text-sm mt-2">{{ proyecto.descripcion }}</p>
+            {% if proyecto.link_repo %}
+                <a href="{{ proyecto.link_repo }}" target="_blank"
+                   class="inline-block mt-3 text-blue-600 hover:underline">
+                    <i class="fab fa-github mr-1"></i> Ver Repositorio
+                </a>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p class="text-gray-500">Este usuario no tiene proyectos aún.</p>
+        {% endfor %}
+    </div>
 </div>
+<style>
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+.animate-fadeIn { animation: fadeIn 0.8s ease-in-out; }
+</style>
 {% endblock %}

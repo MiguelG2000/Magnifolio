@@ -16,8 +16,10 @@
                         <i class="fa-solid fa-briefcase mr-2"></i> Magnifolio
                     </a>
                 </div>
-
                 <div class="hidden md:flex items-center space-x-6">
+                    <a href="{% url 'index' %}" class="text-gray-700 hover:text-blue-600 transition">
+                        <i class="fa-solid fa-house"></i>
+                    </a>
                     {% if request.user.is_authenticated %}
                         <span class="text-gray-700">
                             Bienvenido, {{ request.user.username }}
@@ -28,7 +30,6 @@
                                 <i class="fa-solid fa-user mr-1"></i> Mi Perfil
                                 <i class="fa-solid fa-chevron-down ml-1 text-sm"></i>
                             </button>
-
                             <div id="perfil-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden z-20">
                                 <a href="{% url 'mi_perfil' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                                     <i class="fa-solid fa-user-pen mr-1"></i> Editar Perfil
@@ -38,7 +39,6 @@
                                 </a>
                             </div>
                         </div>
-
                         <a href="{% url 'logout' %}" class="text-red-600 hover:text-red-700 transition">
                             <i class="fa-solid fa-right-from-bracket mr-1"></i> Cerrar sesión
                         </a>
@@ -61,6 +61,9 @@
         </div>
     
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <a href="{% url 'index' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                <i class="fa-solid fa-house mr-1"></i> Home
+            </a>
             {% if request.user.is_authenticated %}
                 <span class="block px-4 py-2 text-gray-700">
                     Bienvenido, {{ request.user.username }}
@@ -81,7 +84,6 @@
                         </a>
                     </div>
                 </div>
-
                 <a href="{% url 'logout' %}" class="block px-4 py-2 text-red-600 hover:bg-gray-100">
                     <i class="fa-solid fa-right-from-bracket mr-1"></i> Cerrar sesión
                 </a>
@@ -95,26 +97,22 @@
             {% endif %}
         </div>
     </nav>
-
     <script>
         // Toggle menú móvil
         document.getElementById('menu-btn').addEventListener('click', function () {
             let menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         });
-
         // Toggle dropdown perfil (escritorio)
         document.getElementById('perfil-btn').addEventListener('click', function () {
             let perfilMenu = document.getElementById('perfil-menu');
             perfilMenu.classList.toggle('hidden');
         });
-
         // Toggle dropdown perfil (móvil)
         document.getElementById('perfil-btn-mobile').addEventListener('click', function () {
             let perfilMenuMobile = document.getElementById('perfil-menu-mobile');
             perfilMenuMobile.classList.toggle('hidden');
         });
-
         // Cierra el dropdown de escritorio si haces click fuera
         window.addEventListener('click', function(e) {
             let perfilBtn = document.getElementById('perfil-btn');

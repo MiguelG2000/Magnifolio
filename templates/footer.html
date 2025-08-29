@@ -1,0 +1,40 @@
+{% load static %}
+
+<footer class="bg-white shadow-lg border-t mt-10">
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Sección superior con enlaces -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+            <!-- Navegación -->
+            <div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Navegación</h3>
+                <ul class="space-y-2">
+                    <li><a href="{% url 'terminos' %}" class="text-gray-600 hover:text-blue-600 transition">Términos y Condiciones</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Información Legal</h3>
+                <p class="text-gray-600 text-sm">
+                    Este sitio cumple con las normativas vigentes y protege la privacidad de sus usuarios.
+                    Consulte los términos para más información.
+                </p>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-3">Contacto</h3>
+                <p class="text-gray-600 text-sm">
+                    ¿Dudas o sugerencias? <br>
+                    Escríbeme a
+                    <a href="mikewhite2000@live.com.mx" class="text-blue-600 hover:underline">mikewhite2000@live.com.mx</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Línea divisoria -->
+        <div class="border-t border-gray-200 mt-8 pt-6 text-center">
+            <p class="text-gray-500 text-sm">
+                © 2025 Magnifolio. Todos los derechos reservados.
+            </p>
+        </div>
+    </div>
+</footer>

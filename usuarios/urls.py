@@ -8,6 +8,9 @@ from .views import (
     editar_perfil,
     usuario_registro,
     mi_portafolio,
+    portafolio,
+    terminos,
+    acerca_mi
 )
 
 urlpatterns = [
@@ -18,4 +21,7 @@ urlpatterns = [
     path("mi_perfil/", mi_perfil, name="mi_perfil"),
     path("editar_perfil/", editar_perfil, name="editar_perfil"),
     path("mi_portafolio/", mi_portafolio, name="mi_portafolio"),
+    path("portafolio/<str:username>/", portafolio, name="portafolio"),
+    path("terminos/", terminos, name="terminos"),
+    path("acerca_mi/", acerca_mi, name="acerca_mi"),
 ]

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block navbar %}
+{% include 'navbar.html' %}
+{% endblock %}
+{% block content %}
+<div class="max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-lg mt-8 animate-fadeIn">
+    <div class="flex items-center mb-6">
+        <i class="fas fa-file-contract text-blue-600 text-3xl mr-3"></i>
+        <h1 class="text-3xl font-bold text-gray-800">Términos y Condiciones de Uso</h1>
+    </div>
+    <p class="text-gray-600 text-sm mb-6">
+        Este contrato describe los términos y condiciones generales aplicables al uso de los servicios ofrecidos
+        por <span class="font-semibold">Magnifolio</span> dentro de su plataforma de portafolios
+        (en adelante, los “SITIOS”). Toda persona que acceda (en adelante, el “USUARIO”) o publique información
+        (en adelante, el “ANUNCIANTE”) acepta los siguientes términos y condiciones.
+    </p>
+    <div class="space-y-6">
+        <div>
+            <h2 class="text-xl font-semibold text-gray-800 mb-2">1. Consulta de información</h2>
+            <p class="text-gray-600 text-sm">
+                Se recomienda a los usuarios ser cautos con la información de los portafolios publicada en el sitio.
+                Si encuentra alguna anomalía, favor de reportarla a <a href="mikewhite2000@live.com.mx" class="text-blue-600 hover:underline">mikewhite2000@live.com.mx</a>.
+            </p>
+        </div>
+
+        <div>
+            <h2 class="text-xl font-semibold text-gray-800 mb-2">2. Datos proporcionados por el “ANUNCIANTE”</h2>
+            <p class="text-gray-600 text-sm">
+                Los “SITIOS” no verifican la veracidad de los datos proporcionados por los usuarios que crean portafolios.
+                Se invita a reportar cualquier anomalía para tomar medidas correspondientes.
+            </p>
+        </div>
+
+        <div>
+            <h2 class="text-xl font-semibold text-gray-800 mb-2">3. Privacidad de la información</h2>
+            <p class="text-gray-600 text-sm">
+                Al registrarse, el usuario proporciona datos personales como nombre, correo y opcionalmente una foto.
+                El usuario podrá decidir si su información será visible para los demás usuarios dentro de la plataforma.
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+.animate-fadeIn { animation: fadeIn 0.6s ease-in-out; }
+</style>
+{% endblock %}
